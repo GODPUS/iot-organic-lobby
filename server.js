@@ -6,7 +6,7 @@ var io;
 function start(route, handle) {
 	function onRequest(request, response){
 		var pathname = url.parse(request.url).pathname;
-		//console.log("Request for "+pathname+" recieved.");
+		console.log("Request for "+pathname+" recieved.");
 
 		route(handle, pathname, response, request, io);
 	}
@@ -25,9 +25,9 @@ function start(route, handle) {
 	
 	io.sockets.on('connection', function (socket) {
 		socket.emit('news', { hello: 'world' });
-		socket.on('my other event', function (data) {
-			console.log(data);
-		});
+		//socket.on('my other event', function (data) {
+			//console.log(data);
+		//});
 	});
 
 

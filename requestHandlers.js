@@ -35,8 +35,8 @@ function movement(response, request,io){
 	var query = urlParts.query;
 
 	//show the name of the object
-	console.log(query.object);
-	io.sockets.emit('movement', { brand: query.object});
+	//console.log(query.object);
+	io.sockets.emit('movement', { brand: query.object, x: query.x, y: query.y, z: query.z });
 
 	//if the query has x,y, or z 
 	//add those to the previous x,y,z

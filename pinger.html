@@ -9,10 +9,45 @@
             html, body { height: 100%; }
             body { font-family: sans-serif; }
             iframe { position:absolute; }
+            #container {
+              margin: 0 auto;
+              display: table;
+              margin-top: 100px;
+              height: 100%;
+            }
+
+            .brand {
+              float: left;
+              width: 300px;
+              height: 300px;
+              border: solid 1px #000;
+              background-color: yellow;
+              font-size: 2em;
+              text-align: center;
+              display: table-cell;
+              display: inline-block;
+              vertical-align: middle;
+              margin: 30px;
+              perspective-origin: 50% 50%;
+              -webkit-transition: all 0.3s ease;
+              -moz-transition: all 0.3s ease;
+              -o-transition: all 0.3s ease;
+              transition: all 0.3s ease;
+            }
+
+            h1 {
+              font-size: 2em;
+            }
+
+            .hidden {
+              display: none;
+            }
             
         </style>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js'></script>
 <script>
   var socket = io.connect('http://'+document.domain+':'+location.port);
   socket.on('news', function (data) {
@@ -22,14 +57,32 @@
   socket.on('movement', function(data){
     //switch the view based on data
     console.log(data);
+
+    if($("#"+data.brand).length === 0 && data.brand !== "")
+    {
+      $("#example").clone().insertBefore($("#clear")).removeClass("hidden").attr("id", data.brand);
+    }
+
+    var $brandDiv = $("#"+data.brand);
+    $brandDiv.find(".title").html(data.brand);
+    $brandDiv.find(".x").html("x: "+data.x);
+    $brandDiv.find(".y").html("y: "+data.y);
+    $brandDiv.find(".z").html("z: "+data.z);
+    $brandDiv.css({ perspective: 400, rotateX: data.x, rotateY: data.y, rotateZ: data.z });
+
   });
 </script>
 
 </head>
 <body>
-
-
-
-
+  <div id="container">
+    <div id="clear" style="clear:both;"></div>
+  </div>
+  <div id="example" class="brand hidden">
+    <h1 class="title"></h1>
+    <p class="x"></p>
+    <p class="y"></p>
+    <p class="z"></p>
+  </div>
 </body>
 </html>
